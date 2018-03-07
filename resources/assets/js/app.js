@@ -5,18 +5,25 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require('./bootstrap')
+require('@node_modules/vuetify/dist/vuetify.min.css')
 
-window.Vue = require('vue');
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import App from './components/App.vue'
+import router from './routes/index.js'
+import Vuetify from 'vuetify'
+ 
+Vue.use(Vuetify)
+Vue.use(VueRouter)
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+window.Vue = Vue
+window.Bus = new Vue()
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    render: h => h(App),
+    router
 });
+
+window.app = app
