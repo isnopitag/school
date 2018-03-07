@@ -1,7 +1,11 @@
 # README #
 
+<<<<<<< HEAD
 Sistema Base - Alio México 2018.
 
+=======
+Sistema Base : Alio Mexico - 2018
+>>>>>>> refs/remotes/origin/master
 ### What is this repository for? ###
 
 * Quick summary
