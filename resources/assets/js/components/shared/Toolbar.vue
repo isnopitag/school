@@ -16,7 +16,7 @@
     export default{
         data(){
             return {
-                title: 'Sistema base - Alio méxico'
+                title: 'Sistema base - Alio méxico Pinches'
             }
         }
     }
