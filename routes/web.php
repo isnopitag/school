@@ -10,21 +10,20 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
- /* 
+ 
 Route::get('/', function () {
     return view('welcome');
 });
-  **/
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
+/***
 Route::group(['prefix' => 'web'], function () {
     Route::get('/homeroot','HomeController@Homeroot')->name('homeroot');
 
     Route::get('/homeadmin','HomeController@HomeSuperAdmin')->name('homeadmin');
 
     Route::get('/homeclient','HomeController@HomeeClient')->name('homeadmin');
-});
+});*/
