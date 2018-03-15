@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
+
 /***
 Route::group(['prefix' => 'web'], function () {
     Route::get('/homeroot','HomeController@Homeroot')->name('homeroot');
