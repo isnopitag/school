@@ -44,4 +44,14 @@ class User extends Authenticatable
     public function inRole($roleSlug){
         return $this->roles()->where('slug',$roleSlug)->count()==1;
     }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
 }
