@@ -20,19 +20,6 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
 /***
- * JWT Integration, I guess...
- */
-Route::post('signup', 'AuthController@register');
-
-Route::post('login', 'AuthController@login');
-
-Route::group(['middleware' => 'jwt.auth'], function(){
-    Route::get('auth/user', 'AuthController@user');
-});
-
-Route::middleware('jwt.refresh')->get('/token/refresh', 'AuthController@refresh');
-
-/***
 Route::group(['prefix' => 'web'], function () {
     Route::get('/homeroot','HomeController@Homeroot')->name('homeroot');
 

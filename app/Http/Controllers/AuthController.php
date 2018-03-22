@@ -4,43 +4,70 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\User;
+use JWTFactory;
+use JWTAuth;
+use Validator;
+use Response;
+use Illuminate\Support\Facades\Auth;
+
 class AuthController extends Controller
 {
-    public function register(RegisterFormRequest $request)
+
+    public function register(Request $request)
     {
-        $user = new User;
-        $user->email = $request->email;
-        $user->name = $request->name;
-        $user->password = bcrypt($request->password);
-        $user->save();
-        return response([
-            'status' => 'success',
-            'data' => $user
-        ], 200);
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255|unique:users',
+            'name' => 'required',
+            'password'=> 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+        User::create([
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'password' => bcrypt($request->get('password')),
+        ]);
+        $user = User::first();
+        $token = JWTAuth::fromUser($user);
+
+        return Response::json(compact('token'));
+
     }
+
+
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-        if ( ! $token = JWTAuth::attempt($credentials)) {
-            return response([
-                'status' => 'error',
-                'error' => 'invalid.credentials',
-                'msg' => 'Invalid Credentials.'
-            ], 400);
-        }
-        return response([
-            'status' => 'success',
-            'token' => $token
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+            'password'=> 'required'
         ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+        $credentials = $request->only('email', 'password');
+        try {
+            if (! $token = JWTAuth::attempt($credentials)) {
+                return response()->json(['token'=> null,'message' => 'invalid_credentials', 'status' => 'otra cosa', 'valid'=> 0], 401);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['token'=> null,'message' => 'could_not_create_token' , 'status' => 'otra cosa', 'valid'=> 0], 500);
+        }
+        $message = 'success';
+        $status = 'otra cosa pero Ok';
+        $valid = 1;
+        return response()->json(compact(['token','message','status','valid']));
     }
+
 
     public function logout()
     {
         JWTAuth::invalidate();
         return response([
             'status' => 'success',
-            'msg' => 'Logged out Successfully.'
+            'message' => 'Logged out Successfully.'
         ], 200);
     }
 

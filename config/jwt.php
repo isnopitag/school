@@ -144,7 +144,10 @@ return [
         |
         */
 
-        'jwt' => 'Tymon\JWTAuth\Providers\JWT\NamshiAdapter',
+        /*Cambios en esto*/
+        /*'jwt' => 'Tymon\JWTAuth\Providers\JWT\NamshiAdapter',*/
+
+        'jwt' => 'Tymon\JWTAuth\Providers\JWT\Namshi',
 
         /*
         |--------------------------------------------------------------------------
@@ -155,7 +158,10 @@ return [
         |
         */
 
-        'auth' => 'Tymon\JWTAuth\Providers\Auth\IlluminateAuthAdapter',
+
+        //'auth' => 'Tymon\JWTAuth\Providers\Auth\IlluminateAuthAdapter',
+
+        'auth' => 'Tymon\JWTAuth\Providers\Auth\Illuminate',
 
         /*
         |--------------------------------------------------------------------------
@@ -166,7 +172,9 @@ return [
         |
         */
 
-        'storage' => 'Tymon\JWTAuth\Providers\Storage\IlluminateCacheAdapter',
+        /*
+        'storage' => 'Tymon\JWTAuth\Providers\Storage\IlluminateCacheAdapter',*/
+        'storage' => 'Tymon\JWTAuth\Providers\Storage\Illuminate'
 
     ],
 
