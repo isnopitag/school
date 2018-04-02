@@ -8,8 +8,9 @@
         "php": ">=7.1.3",
         "benwilkins/laravel-fcm-notification": "@dev",
         "fideloper/proxy": "~4.0",
-        "laravel/framework": "5.6.*",
-        "laravel/tinker": "~1.0"
+        "guzzlehttp/guzzle": "^6.3",
+        "laravel/tinker": "~1.0",
+        "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
