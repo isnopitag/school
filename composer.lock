@@ -4,45 +4,39 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "30e6b94b82dc7fe9cf2cde2482657619",
+    "content-hash": "a5af47a137c539110c44d2ef854f5251",
     "packages": [
         {
-            "name": "benwilkins/laravel-fcm-notification",
-            "version": "v2.0.1",
+            "name": "brozot/laravel-fcm",
+            "version": "v1.2.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/benwilkins/laravel-fcm-notification.git",
-                "reference": "df69683f0dd5ae5b723e9780a7074cb54ededa60"
+                "url": "https://github.com/brozot/Laravel-FCM.git",
+                "reference": "20f2881071cfe7c424f528171c794353d0e5394f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/benwilkins/laravel-fcm-notification/zipball/df69683f0dd5ae5b723e9780a7074cb54ededa60",
-                "reference": "df69683f0dd5ae5b723e9780a7074cb54ededa60",
+                "url": "https://api.github.com/repos/brozot/Laravel-FCM/zipball/20f2881071cfe7c424f528171c794353d0e5394f",
+                "reference": "20f2881071cfe7c424f528171c794353d0e5394f",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/guzzle": "^6.2",
-                "illuminate/config": "5.3.*|5.4.*|5.5.*|5.5.*|5.6.*",
-                "illuminate/notifications": "5.3.*|5.4.*|5.5.*|5.5.*|5.6.*",
-                "illuminate/queue": "5.3.*|5.4.*|5.5.*|5.5.*|5.6.*",
-                "illuminate/support": "5.3.*|5.4.*|5.5.*|5.5.*|5.6.*",
-                "php": ">=5.6.4"
+                "guzzlehttp/guzzle": "~6.0",
+                "illuminate/support": "5.*",
+                "monolog/monolog": "^1.19",
+                "php": ">=5.5.9"
             },
             "require-dev": {
-                "mockery/mockery": "~1.0",
-                "phpunit/phpunit": "~6.0"
+                "laravel/laravel": "5.2.*",
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "4.7.*",
+                "satooshi/php-coveralls": "dev-master"
             },
             "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Benwilkins\\FCM\\FcmNotificationServiceProvider"
-                    ]
-                }
-            },
             "autoload": {
                 "psr-4": {
-                    "Benwilkins\\FCM\\": "src"
+                    "LaravelFCM\\": "src/",
+                    "LaravelFCM\\Mocks\\": "tests/mocks"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -51,12 +45,21 @@
             ],
             "authors": [
                 {
-                    "name": "Ben Wilkins",
-                    "email": "bentwilkins@gmail.com"
+                    "name": "Nicolas Brosy",
+                    "email": "nicolas.brosy@gmail.com"
                 }
             ],
-            "description": "Laravel FCM (Firebase Cloud Messaging) Notification Channel",
-            "time": "2018-03-06T16:52:21+00:00"
+            "description": "Laravel / Lumen package for Firebase Cloud Messaging ",
+            "keywords": [
+                "FCM",
+                "Firebase Cloud Messaging",
+                "firebase",
+                "laravel",
+                "lumen",
+                "notification",
+                "push"
+            ],
+            "time": "2017-08-28T19:19:39+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2809,6 +2812,58 @@
     ],
     "packages-dev": [
         {
+            "name": "benwilkins/laravel-fcm-notification",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/benwilkins/laravel-fcm-notification.git",
+                "reference": "df69683f0dd5ae5b723e9780a7074cb54ededa60"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/benwilkins/laravel-fcm-notification/zipball/df69683f0dd5ae5b723e9780a7074cb54ededa60",
+                "reference": "df69683f0dd5ae5b723e9780a7074cb54ededa60",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.2",
+                "illuminate/config": "5.3.*|5.4.*|5.5.*|5.5.*|5.6.*",
+                "illuminate/notifications": "5.3.*|5.4.*|5.5.*|5.5.*|5.6.*",
+                "illuminate/queue": "5.3.*|5.4.*|5.5.*|5.5.*|5.6.*",
+                "illuminate/support": "5.3.*|5.4.*|5.5.*|5.5.*|5.6.*",
+                "php": ">=5.6.4"
+            },
+            "require-dev": {
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Benwilkins\\FCM\\FcmNotificationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Benwilkins\\FCM\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ben Wilkins",
+                    "email": "bentwilkins@gmail.com"
+                }
+            ],
+            "description": "Laravel FCM (Firebase Cloud Messaging) Notification Channel",
+            "time": "2018-03-06T16:52:21+00:00"
+        },
+        {
             "name": "doctrine/instantiator",
             "version": "1.1.0",
             "source": {
@@ -4552,11 +4607,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-<<<<<<< HEAD
-        "benwilkins/laravel-fcm-notification": 20
-=======
         "tymon/jwt-auth": 20
->>>>>>> 9794af7b4added3eea6ae92d41ab32cecd614cac
     },
     "prefer-stable": true,
     "prefer-lowest": false,
