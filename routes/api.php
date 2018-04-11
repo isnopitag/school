@@ -21,19 +21,29 @@ Route::post('/user/register', 'AuthController@register');
 
 Route::post('/user/login', 'AuthController@login');
 
-Route::post('/user/logout', 'AuthController@logout');
+/***
+ * This middleware is for the JWT
+ */
+Route::group(['middleware' => ['jwt.auth']], function() {
 
-Route::post('/user/refresh', 'AuthController@refresh');
+    Route::post('/user/refresh', 'AuthController@refresh');
 
+    Route::get('logout', 'AuthController@logout');
 
-Route::get('/notification', 'TestNotifications@send');
+    Route::get('/user/test', function(){
+        return response()->json(['foo'=>'bar']);
+    });
+});
 
-
+/***
+ *  ?
+ */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => 'jwt.auth'], function(){
-    Route::post('auth/logout', 'AuthController@logout');
-});
+/***
+ * This Route its only to test Desktop Notifications at localhost:8000/api/user/noti
+ */
+Route::get('/notification', 'TestNotifications@sendToOneDevice');

@@ -28,6 +28,11 @@ class User extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
+    /***
+     * This method its for create the realationship between role and users
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+
     public function roles(){
         return $this->belongsToMany(Role::class,'role_users');
     }

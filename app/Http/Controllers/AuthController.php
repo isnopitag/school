@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-
+    
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -62,6 +62,7 @@ class AuthController extends Controller
     }
 
 
+
     public function logout()
     {
         JWTAuth::invalidate();
@@ -86,4 +87,5 @@ class AuthController extends Controller
             'data' => $user
         ]);
     }
+
 }

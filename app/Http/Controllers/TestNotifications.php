@@ -11,8 +11,11 @@ use FCM;
 
 class TestNotifications extends Controller
 {
-    public function send()
-    {
+    /**
+     * In this case $token its hardcoded for testing
+     */
+
+    public function sendToOneDevice(){
         $optionBuilder = new OptionsBuilder();
         $optionBuilder->setTimeToLive(60*20);
 
@@ -27,10 +30,33 @@ class TestNotifications extends Controller
         $notification = $notificationBuilder->build();
         $data = $dataBuilder->build();
 
-        $token = "cPmdOQiHkoI:APA91bH7Ae14xx0f5OPpX0QlAOupo6zauVjUqr1xJv2utfvbHcog0Vlq8ZPP3iaun8so-KSyatZ1B6ZzgZWhOp7ntSb8suy4JWiEQRWWL-ojsN0zunTJJidmEP4P8ZiXcYuxGjqnJkVW";
-        //$token = "d3Twtn-BeJQ:APA91bGVKUTHoxQafojD0rk7pjqwV7B-Jfjpt_muy3dsU7-rO9hOyfZjy0CYP9mw7xvlck85HEoht0XGDg9U5bsqs-Y6EbkNanJUjbnTE_clTAiMYcg_hnJAqnBSOO7E0jMRLVC3M_Gg";
+        $token ="cw-sE-vhARE:APA91bEMPzwPTz79xnRqpv3qPfXoWat6MqzguVqEiPTybnfWjdyKBRqmCDvTZuB7RdSobNasR-5P2YKmKrIgmCDbIYpNRN6PXy2ckNsQpoXxAItsmy78cCEgHDOjfqQb65Og8TQzMzrS";
 
-        //$downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
         $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
+    }
+
+    public function sendToMultipleDevices(){
+        $optionBuilder = new OptionsBuilder();
+        $optionBuilder->setTimeToLive(60*20);
+
+        $notificationBuilder = new PayloadNotificationBuilder('my title');
+        $notificationBuilder->setBody('Hello world')
+            ->setSound('default');
+
+        $dataBuilder = new PayloadDataBuilder();
+        $dataBuilder->addData(['a_data' => 'my_data']);
+
+        $option = $optionBuilder->build();
+        $notification = $notificationBuilder->build();
+        $data = $dataBuilder->build();
+
+        // You must change it to get your tokens
+        $tokens = MYDATABASE::pluck('fcm_token')->toArray();
+
+        $downstreamResponse = FCM::sendTo($tokens, $option, $notification, $data);
+
+        $downstreamResponse->numberSuccess();
+        $downstreamResponse->numberFailure();
+        $downstreamResponse->numberModification();
     }
 }
