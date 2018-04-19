@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use Gate;
 
-class TestController extends Controller
+class TestRolesController extends Controller
 {
     public function homeRoot(){
         if(Gate::allows('web_root')){

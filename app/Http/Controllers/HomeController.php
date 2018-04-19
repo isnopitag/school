@@ -25,7 +25,7 @@ class HomeController extends Controller
     {
         //return view('welcome');
 
-            echo "Holi ches prros alv";
+            echo "Index";
     }
 
 }
