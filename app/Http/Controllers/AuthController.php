@@ -13,28 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255|unique:users',
-            'name' => 'required',
-            'password'=> 'required'
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors());
-        }
-        User::create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => bcrypt($request->get('password')),
-        ]);
-        $user = User::first();
-        $token = JWTAuth::fromUser($user);
 
-        return Response::json(compact('token'));
-
-    }
 
     public function login(Request $request)
     {
@@ -43,47 +22,43 @@ class AuthController extends Controller
             'password'=> 'required'
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return $this->getResponse(false,'Error al registrar',$validator->errors(),'',401);
         }
         $credentials = $request->only('email', 'password');
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['token'=> null,'message' => 'invalid_credentials', 'status' => 'otra cosa', 'valid'=> 0], 401);
+                return $this->getResponse(false,'Credenciales invalidas','','',401);
             }
         } catch (JWTException $e) {
-            return response()->json(['token'=> null,'message' => 'could_not_create_token' , 'status' => 'otra cosa', 'valid'=> 0], 500);
+            return $this->getResponse(false,'No se pudo crear el token','','',500);
         }
-        $message = 'success';
-        $status = 'otra cosa pero Ok';
-        $valid = 1;
-        return response()->json(compact(['token','message','status','valid']));
+        return $this->getResponse(true,'Usuario Autenticado',compact('token'),'',200);
     }
-
 
 
     public function logout()
     {
         JWTAuth::invalidate();
-        return response([
-            'status' => 'success',
-            'message' => 'Logged out Successfully.'
-        ], 200);
+        return $this->getResponse(true,'Usuario Desautenticado','','',200);
     }
 
     public function refresh()
     {
-        return response([
-            'status' => 'success'
-        ]);
+        JWTAuth::refresh();
+        return $this->getResponse(true,'Token Refrescado',compact('token'),'',200);
     }
 
     public function user(Request $request)
     {
         $user = User::find(Auth::user()->id);
-        return response([
-            'status' => 'success',
-            'data' => $user
-        ]);
+        return $this->getResponse(true,'Usuario',$user,'',200);
+    }
+
+    private function getResponse($flag,$message,$data,$meta,$status){
+        return response()->json(['flag'=>$flag,
+            'message'=>$message,
+            'data'=>[$data],
+            'meta'=>[$meta]], $status);
     }
 
 }

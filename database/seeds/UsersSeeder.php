@@ -13,15 +13,14 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
+        $root=Role::where('name','Root')->first();
+
         User::create([
-            'name' => 'Alberto Granados',
             'email'=>'albertogradados@aliomexico.com',
-            'password'=>bcrypt('2662')
+            'password'=>bcrypt('2662'),
+            'id_role'=> $root->id
         ]);
 
-        DB::table('role_users')->insert([
-            'user_id' => 1,
-            'role_id' => 1
-        ]);
+
     }
 }

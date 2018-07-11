@@ -4,26 +4,27 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string $permissions
+ * @property string $created_at
+ * @property string $updated_at
+ * @property User[] $users
+ */
 class Role extends Model
 {
-    protected  $fillable =['name','slug','permissions'];
+    /**
+     * @var array
+     */
+    protected $fillable = ['name', 'slug', 'permissions', 'created_at', 'updated_at'];
 
-    public function users(){
-        return $this->belongsToMany(User::class,'role_users');
-    }
-
-    public  function hasAccess(array $permissions){
-
-        foreach ($permissions as $permission){
-            if($this->hasPermission($permission)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    protected function hasPermission(string $permission){
-        $permissions = json_dencode( $this->permissions, true);
-        return $permissions[$permission]??false;
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users()
+    {
+        return $this->hasMany('App\User', 'id_role');
     }
 }
