@@ -3,39 +3,59 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\User;
 use JWTFactory;
 use JWTAuth;
 use Validator;
 use Response;
-use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class AuthController extends ApiController
 {
-
-
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255',
-            'password'=> 'required'
-        ]);
-        if ($validator->fails()) {
-            return $this->getResponse(false,'Error al registrar',$validator->errors(),'',401);
-        }
         $credentials = $request->only('email', 'password');
         try {
-            if (! $token = JWTAuth::attempt($credentials)) {
-                return $this->getResponse(false,'Credenciales invalidas','','',401);
+            $token = JWTAuth::attempt($credentials);
+            if (! $token) {
+                return $this->sendErrorResponse('Wrong credentials', 401);
             }
         } catch (JWTException $e) {
-            return $this->getResponse(false,'No se pudo crear el token','','',500);
+            return $this->sendErrorResponse();
         }
-        return $this->getResponse(true,'Usuario Autenticado',compact('token'),'',200);
+        $user = Auth::user();
+        return $this->sendSuccessResponse([
+            'token'=>$token,
+            'user' => $user->email,
+            'profile_picture' => $user->profile_picture
+        ], 'User successfully authenticated');
     }
 
 
+    //TODO Uncomment if you need it, delete it if the project doesn't need it
+    /*
+    public function register(RegisterRequest $request){
+        $file = $request->file('profile_picture');
+        $path = $file ? $file->store('public') : 'public/no_image.png';
+        $user = User::create([
+            'email' => $request->email,
+            'username' => $request->username,
+            'name' => $request->name,
+            'profile_picture' => $path,
+            'rfc' => $request->rfc,
+            'password' => $request->password,
+            'birth' => $request->birth,
+            'sex' => $request->sex,
+            'mobile_phone' => $request->mobile_phone,
+            'address' => $request->address,
+            'id_role' => $request->id_role
+        ]);
+        return $this->sendSuccessResponse($user, 'User successfully registered');
+    }
+
+    */
     public function logout()
     {
         JWTAuth::invalidate();
