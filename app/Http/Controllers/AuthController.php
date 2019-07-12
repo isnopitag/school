@@ -20,7 +20,9 @@ class AuthController extends ApiController
         try {
             $token = JWTAuth::attempt($credentials);
             if (! $token) {
+                //TODO: Aqui es la respuesta que se le da al cliente si se equivoca con sus contraseña o correo
                 return $this->sendErrorResponse('Wrong credentials', 401);
+                //TODO: Recuerden que si quieren enviar esta respuesta a moviles tiene que ser un SendErrorResponseForMobile pues el que tiene el codigo de error.
             }
         } catch (JWTException $e) {
             return $this->sendErrorResponse();
@@ -29,6 +31,7 @@ class AuthController extends ApiController
         return $this->sendSuccessResponse([
             'token'=>$token,
             'user' => $user->email,
+            //TODO: Cambiar esto si el modelo del usaurio no contiene un  profile picture.
             'profile_picture' => $user->profile_picture
         ], 'User successfully authenticated');
     }

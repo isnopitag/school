@@ -55,7 +55,8 @@ class ApiController extends Controller
             'message' => $message,
             'data' => $data,
             'meta' => $meta
-        ], 200);
+        ], 200,[],JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT);
+        //TODO: Si despues del 200 va un array[] vacio es parte del metodo.
     }
 
     protected function sendErrorResponse($message = 'Unexpected error. Try again.', $code=501){
@@ -63,5 +64,95 @@ class ApiController extends Controller
             'flag'=>false,
             'message'=>$message],
         $code);
+    }
+
+    /**
+     * Este metodo es una vaiante del SendSucces Response
+     *
+     * Este metodo agrega la cookie (token) a la respuesta
+     * con el valor del  token para el usuario autenticada
+     *
+     * @param array  $data    Data array with minimal information
+     *                        of the authenticated user
+     * @param string $message Custom message indicating the status
+     *                        of the user login. 'Successful operation'
+     *                        is set by default
+     * @param array  $meta    Array of metadata with instructions to
+     *                        manipulate the resource data
+     *
+     * @return void
+     */
+
+    //TODO: Este metodo es importante porque es el que agrega la cookie a donde este respondiendo
+    protected function sendSuccessLoginResponse($data, $message = 'Successful operation', $meta = [])
+    {
+        $token = $data['token'];
+        unset($data['token']);
+        return response()
+            ->json(
+                [
+                    'flag' => true,
+                    'message' => $message,
+                    'data' => $data,
+                    'meta' => $meta
+                ], 200,[], JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT
+            )
+            ->header(
+                'Content-type', 'text/json'
+            )
+            ->cookie('token', $token, 60);
+        //Ese options al final son filtros para que la respuesta quede con un formato agradable
+    }
+
+    //Todo Por default dejo este metodo descomentado pues con el que puedes idenitificar ids del usuario autenticado con la cookie
+    protected function getAuthenticatedUser(){
+        $user= null;
+        try{
+            $user = JWTAuth::user();
+        }
+        catch (Exceptions\JWTException $e){
+            $this->sendErrorResponse('Sessión invalida here', 403);
+        }
+        return $user;
+    }
+
+    //Todo Pero por el contrario si el proyecto tiene una estructura de usuarios similar al Hermes
+    //Todo Es decir si la tabla de usuarios queda corta esta puede ser la alternativa ya que en el ejemplo del Hermes
+    //Todo en para partener almacenabamos su RFC,pero ni cliente, adminsitrative ni operative se almacenaba eso.
+
+//    protected function getTypeOfUser(){
+//
+//        $user= JWTAuth::user();
+//
+//        $role = Role::whereId($user->id_role)->first();
+//
+//
+//        if($role->name == "Administrative"){
+//            $administrative = Administrative::whereIdUser($user->id)->first();
+//            return $administrative;
+//        }
+//        if($role->name == "Operative"){
+//            $operative = Operative::whereIdUser($user->id)->first();
+//            return $operative;
+//        }
+//        if($role->name == "Partner"){
+//            $partner = Partner::whereIdUser($user->id)->first();
+//            return $partner;
+//        }
+//        if($role->name == "Client"){
+//            $client = Client::whereIdUser($user->id)->first();
+//            return $client;
+//        }
+//    }
+
+    //TODO: Si el proyecto va orientado a moviles este metodo de respuesta con error contiene un extra para añadir el codigo de error
+    //TODO: la estructura que yo manejaba era que si era un error 1000 puede especificarse que algo fallo, pero en cambio si es un error 1100 es un error mas especifico del mismo tipo
+    //TODO: Por ejemplo error 2000 no hay ningun producto pero el error 2100 no hay existencia de un producto pero si hay mas productos.
+    protected function sendErrorResponseForMobile($errorCode = 0000,$message = 'Error inesperado, inténtelo de nuevo', $code=501){
+        return response()->json([
+            'flag'=>false,
+            'code' => $errorCode,
+            'message'=>$message],
+            $code);
     }
 }
