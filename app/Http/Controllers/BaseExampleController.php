@@ -59,7 +59,7 @@ class BaseExampleController extends ApiController
     {
         //
     }
-    
+
     /**
      * Update the specified resource in storage.
      *

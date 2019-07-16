@@ -10,6 +10,7 @@ namespace App\Http\Middleware;
 use Closure;
 use JWTAuth;
 use Exception;
+use Tymon\JWTAuth\Exceptions;
 
 class authJWT
 {
