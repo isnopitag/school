@@ -11,3 +11,7 @@ npm-debug.log
 yarn-error.log
 /vendor
 composer.lock
+/.env
+/public/js/app.js
+.env
+package-lock.json
