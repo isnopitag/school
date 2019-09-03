@@ -12,6 +12,7 @@ class RolesSeeder extends Seeder
      */
     public function run()
     {
+        /*
         $root=Role::create([
             'name' => 'Root',
             'slug' => 'root',
@@ -20,23 +21,16 @@ class RolesSeeder extends Seeder
                 'web_admin' => true,
                 'web_client' => true,
             ]),
+        ]);*/
+
+        Role::create([
+            'name' => 'Teacher',
+            'slug' => 'teacher',
         ]);
 
-        $superadmin=Role::create([
-            'name' => 'Superadmin',
-            'slug' => 'superadmin',
-            'permissions' => json_encode([
-                'web_admin' => true,
-            ]),
-        ]);
-
-        $client=Role::create([
-            'name' => 'Client',
-            'slug' => 'client',
-            'permissions' => json_encode([
-                'web_client' => true,
-                'mobile_client' => true,
-            ]),
+        Role::create([
+            'name' => 'Student',
+            'slug' => 'student',
         ]);
     }
 }
