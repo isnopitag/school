@@ -216,4 +216,22 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->attributes['profile_picture'];
     }
+
+    public function isTeacher()
+    {
+        if ($this->inRoles('teacher')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function isStudent()
+    {
+        if ($this->inRoles('student')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

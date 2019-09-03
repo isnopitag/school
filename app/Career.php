@@ -18,7 +18,9 @@ class Career extends Model
     /**
      * @var array
      */
-    protected $fillable = ['career', 'profile_image', 'cover_image', 'created_at', 'updated_at'];
+    protected $fillable = ['career', 'profile_image', 'cover_image'];
+    
+    protected $hidden = [ 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
