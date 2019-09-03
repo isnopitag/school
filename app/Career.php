@@ -27,4 +27,30 @@ class Career extends Model
     {
         return $this->hasMany('App\User', 'id_career');
     }
+
+    public function getProfileImageAttribute($image){
+
+        if(!$image || starts_with($image, 'http')){
+            return $image;
+        }
+        return Storage::disk('public')->url($image);
+    }
+
+    public function imageNameProfile()
+    {
+        return $this->attributes['profile_image'];
+    }
+
+    public function getCoverImageAttribute($image){
+
+        if(!$image || starts_with($image, 'http')){
+            return $image;
+        }
+        return Storage::disk('public')->url($image);
+    }
+
+    public function imageNameCover()
+    {
+        return $this->attributes['conver_image'];
+    }
 }

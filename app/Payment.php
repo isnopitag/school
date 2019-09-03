@@ -27,4 +27,17 @@ class Payment extends Model
     {
         return $this->belongsTo('App\User', 'id_student');
     }
+
+    public function getTicketAttribute($image){
+
+        if(!$image || starts_with($image, 'http')){
+            return $image;
+        }
+        return Storage::disk('public')->url($image);
+    }
+
+    public function imageName()
+    {
+        return $this->attributes['ticket'];
+    }
 }
