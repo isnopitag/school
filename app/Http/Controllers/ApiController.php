@@ -104,7 +104,6 @@ class ApiController extends Controller
         //Ese options al final son filtros para que la respuesta quede con un formato agradable
     }
 
-    //Todo Por default dejo este metodo descomentado pues con el que puedes idenitificar ids del usuario autenticado con la cookie
     protected function getAuthenticatedUser(){
         $user= null;
         try{
@@ -116,38 +115,6 @@ class ApiController extends Controller
         return $user;
     }
 
-    //Todo Pero por el contrario si el proyecto tiene una estructura de usuarios similar al Hermes
-    //Todo Es decir si la tabla de usuarios queda corta esta puede ser la alternativa ya que en el ejemplo del Hermes
-    //Todo en para partener almacenabamos su RFC,pero ni cliente, adminsitrative ni operative se almacenaba eso.
-
-//    protected function getTypeOfUser(){
-//
-//        $user= JWTAuth::user();
-//
-//        $role = Role::whereId($user->id_role)->first();
-//
-//
-//        if($role->name == "Administrative"){
-//            $administrative = Administrative::whereIdUser($user->id)->first();
-//            return $administrative;
-//        }
-//        if($role->name == "Operative"){
-//            $operative = Operative::whereIdUser($user->id)->first();
-//            return $operative;
-//        }
-//        if($role->name == "Partner"){
-//            $partner = Partner::whereIdUser($user->id)->first();
-//            return $partner;
-//        }
-//        if($role->name == "Client"){
-//            $client = Client::whereIdUser($user->id)->first();
-//            return $client;
-//        }
-//    }
-
-    //TODO: Si el proyecto va orientado a moviles este metodo de respuesta con error contiene un extra para añadir el codigo de error
-    //TODO: la estructura que yo manejaba era que si era un error 1000 puede especificarse que algo fallo, pero en cambio si es un error 1100 es un error mas especifico del mismo tipo
-    //TODO: Por ejemplo error 2000 no hay ningun producto pero el error 2100 no hay existencia de un producto pero si hay mas productos.
     protected function sendErrorResponseForMobile($errorCode = 0000,$message = 'Error inesperado, inténtelo de nuevo', $code=501){
         return response()->json([
             'flag'=>false,
