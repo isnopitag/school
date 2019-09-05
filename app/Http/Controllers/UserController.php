@@ -38,7 +38,7 @@ class UserController extends ApiController
     {
         //
     }
-    
+
     /**
      * Update the specified resource in storage.
      *

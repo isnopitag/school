@@ -21,7 +21,7 @@ class Kardex extends Model
     /**
      * @var array
      */
-    protected $fillable = ['opportunity', 'semester', 'grade', 'average', 'created_at', 'updated_at'];
+    protected $fillable = ['id_student','id_subject','opportunity', 'semester', 'grade', 'average', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
