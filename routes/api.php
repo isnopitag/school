@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,32 +16,20 @@ use Illuminate\Http\Request;
  * web browser or Postman like this: "localhost:8000/api/user/login"
  */
 Route::post('/user/register', 'AuthController@register');
-
 Route::post('/user/login', 'AuthController@login');
 
-/***
- * This middleware is for the JWT
- */
-Route::group(['middleware' => ['jwt.auth']], function() {
+Route::get('careers','CareerController@index');
 
-    Route::post('/user/refresh', 'AuthController@refresh');
+Route::get('status','StatusController@index');
 
-    Route::get('logout', 'AuthController@logout');
+Route::prefix('auth')->group(function () {
 
-    Route::get('/user/test', function(){
-        return response()->json(['foo'=>'bar']);
-    });
 });
 
-/***
- *  ?
- */
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('teachers')->group(function () {
+    Route::get('/','UserController@indexTeachers');
 });
 
-/***
- * This Route its only to test Desktop Notifications at localhost:8000/api/user/noti
- */
-Route::get('/notification', 'TestNotifications@sendToOneDevice');
+Route::prefix('students')->group(function () {
+
+});

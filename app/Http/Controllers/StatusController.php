@@ -1,12 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-use App\User;
-use App\Role;
+use App\Status;
 
-class UserController extends ApiController
+class StatusController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -14,6 +12,17 @@ class UserController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function index()
+    {
+        $statuses = Status::all();
+        return $this->sendCollectionCorrectResponse($statuses,'status',404);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
         //
     }
@@ -41,6 +50,17 @@ class UserController extends ApiController
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -61,20 +81,5 @@ class UserController extends ApiController
     public function destroy($id)
     {
         //
-    }
-
-    public function indexTeachers(){
-        /*
-        dd($this->getRoleIdByName('Teacher'));
-        $teachers = User::with('status','career')->where('users.id_role',$this->getRoleIdByName('Teacher'))->get();
-        return $this->sendCollectionCorrectResponse($teachers,'Teachers');*/
-
-        $id_role = $this->getRoleIdByName('Teacher');
-        $teachers = User::with('status','career')->where('users.id_role',$id_role)->get();
-        return $this->sendCollectionCorrectResponse($teachers,'Teachers');
-    }
-
-    private function getRoleIdByName($roleName){
-        return Role::whereName($roleName)->firstOrFail()->id;
     }
 }

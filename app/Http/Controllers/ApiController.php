@@ -122,4 +122,11 @@ class ApiController extends Controller
             'message'=>$message],
             $code);
     }
+
+    protected function sendCollectionCorrectResponse($query,$model,$code=404){
+        if($query->isEmpty()){
+            return $this->sendErrorResponse('No hay registros de '.$model,$code);
+        }
+        return $this->sendSuccessResponse($query,'Todos los '.$model.' cargados');
+    }
 }
