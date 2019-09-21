@@ -17,15 +17,6 @@ class StatusController extends ApiController
         return $this->sendCollectionCorrectResponse($statuses,'status',404);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +26,10 @@ class StatusController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        $status = new Status();
+        $status->status = $request->status;
+        $status->save();
+        return  $this->sendSuccessResponse($status,'El nuevo status se ha creado');
     }
 
     /**

@@ -35,9 +35,20 @@ class authJWT
                     'message'=>'Token is Invalid',
                     'data' =>[],
                     'meta' => []
+                ], 403//$e->getStatusCode()
+            );
+        }
+        catch(Exceptions\TokenBlacklistedException $e) {
+            return response()->json(
+                [
+                    'flag' => false,
+                    'message'=>'Token is BlackListed',
+                    'data' =>[],
+                    'meta' => []
                 ], $e->getStatusCode()
             );
-        } catch(Exceptions\TokenExpiredException $e){
+        }
+        catch(Exceptions\TokenExpiredException $e){
             return response()->json(
                 [
                     'flag' => false,

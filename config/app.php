@@ -154,6 +154,7 @@ return [
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -214,7 +215,7 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'FCM'      => LaravelFCM\Facades\FCM::class,
         'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
-
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

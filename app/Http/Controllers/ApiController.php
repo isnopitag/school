@@ -6,8 +6,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
 use League\Fractal;
-
+use JWTAuth;
 class ApiController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -128,5 +131,55 @@ class ApiController extends Controller
             return $this->sendErrorResponse('No hay registros de '.$model,$code);
         }
         return $this->sendSuccessResponse($query,'Todos los '.$model.' cargados');
+    }
+
+    public function sendToOneDevice($title = 'Notificación de ivm',$message = 'Comprobar applicación', $token){
+
+        $optionBuilder = new OptionsBuilder();
+        $optionBuilder->setTimeToLive(60*20);
+        $priority = 'high';
+        $optionBuilder->setPriority($priority);
+
+        $notificationBuilder = new PayloadNotificationBuilder($title);
+        $notificationBuilder->setBody($message)
+            ->setSound('default');
+
+        $dataBuilder = new PayloadDataBuilder();
+        $dataBuilder->addData(['title' => $title, 'message' => $message ]);
+
+        $option = $optionBuilder->build();
+        $notification = $notificationBuilder->build();
+
+        $data = $dataBuilder->build();
+
+        FCM::sendTo($token, $option, $notification, $data);
+
+        return true;
+    }
+
+    public function sendToMultipleDevices( $title = 'Notificación de ivm',$message = 'Comprobar applicación', $tokens){
+        $optionBuilder = new OptionsBuilder();
+        $optionBuilder->setTimeToLive(60*20);
+        $priority = 'high';
+        $optionBuilder->setPriority($priority);
+
+        $notificationBuilder = new PayloadNotificationBuilder($title);
+        $notificationBuilder->setBody($message)
+            ->setSound('default');
+
+        $dataBuilder = new PayloadDataBuilder();
+        $dataBuilder->addData(['a_data' => 'my_data']);
+
+        $option = $optionBuilder->build();
+        $notification = $notificationBuilder->build();
+        $data = $dataBuilder->build();
+
+
+        $downstreamResponse = FCM::sendTo($tokens, $option, $notification, $data);
+
+        $downstreamResponse->numberSuccess();
+        $downstreamResponse->numberFailure();
+        $downstreamResponse->numberModification();
+        return true;
     }
 }

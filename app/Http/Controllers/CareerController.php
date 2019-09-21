@@ -26,7 +26,22 @@ class CareerController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        $career = new Career();
+        if($request->hasFile('profile_image')) {
+            $image = $request->file('profile_image');
+            $career->profile_image = $image->store('careers','public');
+        }else{
+            $career->profile_image = 'https://picsum.photos/500/500';
+        }
+        if($request->hasFile('cover_image')) {
+            $image = $request->file('cover_image');
+            $career->cover_image = $image->store('careers','public');
+        }else{
+            $career->cover_image = 'https://picsum.photos/500/500';
+        }
+        $career->career = $request->career;
+        $career->save();
+        return $this->sendSuccessResponse($career,'Career creada');
     }
 
     /**
