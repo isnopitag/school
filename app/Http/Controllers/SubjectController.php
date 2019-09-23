@@ -8,6 +8,14 @@ use App\Subject;
 
 class SubjectController extends ApiController
 {
+
+    public function __construct()
+    {
+        $this->middleware('jwt-auth:teacher')->only(['store']);
+        $this->middleware('jwt-auth:teacher,student')->only(['index']);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +23,8 @@ class SubjectController extends ApiController
      */
     public function index()
     {
-        //
+        $subjects = Subject::with('user')->get();
+        return  $this->sendSuccessResponse($subjects,'Todas las materias cargadas');
     }
 
 
@@ -27,7 +36,14 @@ class SubjectController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        $teacher  = $this->getAuthenticatedUser();
+        $subject = new Subject();
+        $subject->id_teacher = $teacher->id;
+        $subject->name = $request->name;
+        $subject->description = $request->description;
+        $subject->save();
+
+        return $this->sendSuccessResponse($subject,'Se creo la materia: '.$request->name);
     }
 
     /**

@@ -16,10 +16,10 @@ class CreateKardexesTable extends Migration
         Schema::create('kardexes', function (Blueprint $table) {
         $table->unsignedInteger('id_student');
         $table->unsignedInteger('id_subject');
-        $table->integer('opportunity');
-        $table->integer('semester');
-        $table->float('grade',3,2);
-        $table->float('average',3,2);
+        $table->integer('opportunity')->default(1);
+        $table->integer('semester')->default(1);
+        $table->float('grade',3,2)->default(0.0);
+        $table->float('average',3,2)->default(0.0);
         $table->timestamps();
         $table->primary(['id_student', 'id_subject']);
         $table->foreign('id_student')->references('id')->on('users');

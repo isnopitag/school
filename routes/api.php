@@ -34,10 +34,17 @@ Route::prefix('auth')->group(function () {
 
 });
 
+Route::get('subject','SubjectController@index');
+Route::post('subject','SubjectController@store');
+
+Route::get('kardex','KardexController@index');
+Route::post('subject/{id}/enroll','KardexController@store');
+
 Route::prefix('teachers')->group(function () {
     Route::get('/','UserController@indexTeachers');
+
 });
 
 Route::prefix('students')->group(function () {
-
+    Route::get('/','UserController@indexStudents');
 });

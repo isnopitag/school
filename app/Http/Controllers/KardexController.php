@@ -7,6 +7,10 @@ use App\Kardex;
 
 class KardexController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware('jwt-auth:student')->only(['store','index']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +18,13 @@ class KardexController extends ApiController
      */
     public function index()
     {
-        //
+        $student = $this->getAuthenticatedUser();
+
+        $kardex = Kardex::with('user.status','subject','subject.user.status')
+            ->whereHas('user' , function($q) use ($student){
+                $q->where('users.id',$student->id);
+            })->get();
+        return $this->sendSuccessResponse($kardex,'Se cargo el kardex');
     }
 
     /**
@@ -23,9 +33,16 @@ class KardexController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$id)
     {
-        //
+        $student = $this->getAuthenticatedUser();
+
+        $kardex = new Kardex();
+        $kardex->id_student = $student->id;
+        $kardex->id_subject = $id;
+        $kardex->save();
+        return $this->sendSuccessResponse($kardex, 'La materia se asigno correctamente');
+
     }
 
     /**

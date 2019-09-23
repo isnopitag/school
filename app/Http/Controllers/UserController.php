@@ -135,6 +135,13 @@ class UserController extends ApiController
         return $this->sendCollectionCorrectResponse($teachers,'Teachers');
     }
 
+    public function indexStudents(){
+
+        $id_role = $this->getRoleIdByName('Student');
+        $teachers = User::with('status','career')->where('users.id_role',$id_role)->get();
+        return $this->sendCollectionCorrectResponse($teachers,'Teachers');
+    }
+
     private function getRoleIdByName($roleName){
         return Role::whereName($roleName)->firstOrFail()->id;
     }
